@@ -35,7 +35,7 @@ char *decryptString(char *string)
 
 void enableEcho(struct termios *old)
 {
-    tcsetattr(STDIN_FILENO, TCSANOW, old);
+    tcsetattr(STDIN_FILENO, TCSANOW, old); 
 }
 
 void disableEcho(struct termios *old)
