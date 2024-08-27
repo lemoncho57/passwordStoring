@@ -17,7 +17,7 @@ char *encryptString(char *string)
 {
     while (*string != '\0')
     {
-        *string += 23;
+        *string += 103;
         ++string;
     }
     return string;
@@ -27,7 +27,7 @@ char *decryptString(char *string)
 {
     while (*string != '\0')
     {
-        *string -= 23;
+        *string -= 103;
         ++string;
     }
     return string;
