@@ -58,6 +58,7 @@ void askForPassNameInput(char *name, char *password)
     clearInputBuffer();
     fprintf(stdout, "Enter a name associated with the password: ");
     fgets(name, sizeof(name), stdin);
+    name[strcspn(name, "\n")] = 0;
 }
 
 bool askForMainPassword(size_t mainPassLenght)
