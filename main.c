@@ -211,6 +211,8 @@ int main()
                         fprintf(stdout, "%s: %s\n", passwords[i].name, passwords[i].password);
                     }
                 }
+                fprintf(stdout, "\n\n\n\n Press any key to continue...\n");
+                getchar();
             }
             releasePasswords(passwords);
         }
@@ -222,7 +224,7 @@ int main()
             fprintf(stderr, "Incorrect option\n");
             break;
         }
-        fprintf(stdout,"\n");
+        system("clear");
     }
     return 0;
 }
