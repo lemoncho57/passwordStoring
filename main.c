@@ -1,15 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#ifdef __linux__
 #include <unistd.h>
 #include <termios.h>
-#include <stdbool.h>
+#endif
 
 #define PASSWORD_ARRAY_LENGHT 50
 
 char mainPass[100];
 bool running = true;
+#ifdef __linux__
 struct termios oldTermios;
+#endif
 
 void clearInputBuffer();
 
@@ -33,9 +37,10 @@ char *decryptString(char *string)
     return string;
 }
 
+#ifdef __linux__
 void enableEcho(struct termios *old)
 {
-    tcsetattr(STDIN_FILENO, TCSANOW, old); 
+    tcsetattr(STDIN_FILENO, TCSANOW, old);
 }
 
 void disableEcho(struct termios *old)
@@ -46,14 +51,19 @@ void disableEcho(struct termios *old)
     new.c_lflag &= ~ECHO;
     tcsetattr(STDIN_FILENO, TCSANOW, &new);
 }
+#endif
 
 void askForPassNameInput(char *name, char *password)
 {
+    #ifdef __linux__
     disableEcho(&oldTermios);
+    #endif
     fprintf(stdout, "Enter a password: ");
     fgets(password, sizeof(password), stdin);
     password[strcspn(password, "\n")] = 0;
+    #ifdef __linux__
     enableEcho(&oldTermios);
+    #endif
 
     clearInputBuffer();
     fprintf(stdout, "Enter a name associated with the password: ");
@@ -65,16 +75,20 @@ bool askForMainPassword(size_t mainPassLenght)
 {
     char s[mainPassLenght];
 
+    #ifdef __linux__
     disableEcho(&oldTermios);
+    #endif
     fprintf(stdout, "Enter main password: ");
     fgets(s, sizeof(s), stdin);
     s[strcspn(s, "\n")] = 0;
     fprintf(stdout, "\n");
+    #ifdef __linux__
     enableEcho(&oldTermios);
+    #endif
 
     if (strcmp(s, mainPass) != 0)
         return false;
-    
+
     return true;
 }
 
@@ -224,7 +238,11 @@ int main()
             fprintf(stderr, "Incorrect option\n");
             break;
         }
+        #ifdef __linux__
         system("clear");
+        #elif __WIN32__
+        system("cls");
+        #endif
     }
     return 0;
 }
